@@ -1,0 +1,7 @@
+<h4>Modificar Viaje</h4>
+<form method="POST" > {% csrf_token %}
+    <div class="form-group row">
+        {{formulario_viaje.as_p}}
+    </div>
+    <button type="submit">Modificar Viaje</button>
+</form>

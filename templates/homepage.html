@@ -1,0 +1,125 @@
+{% extends 'master.html' %}
+{% load auth_extras %}
+{% block contenido %}
+<style>
+  .buttonClass1 {
+    font-size: 15px;
+    font-family: Arial;
+    width: 200px;
+    height: 50px;
+    border-width: 1px;
+    color: #ffffff;
+    border-color: #057fd0;
+    font-weight: bold;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    box-shadow: 0px 1px 0px 0px #f0f7fa;
+    text-shadow: 0px -1px 0px #5b6178;
+    background: linear-gradient(#33bdef, #019ad2);
+    margin-left: 20px;
+  }
+
+  .buttonClass1:hover {
+    background: linear-gradient(#019ad2, #33bdef);
+  }
+
+  .card_hotel {
+    flex: 1 150px;
+    padding: 2px 5px 2px 5px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    margin-right: 20px
+  }
+
+  .card-title {
+    margin-left: 20px;
+  }
+
+  .card-subtitle {
+    margin-left: 20px;
+  }
+
+  .card-text {
+    margin-left: 20px;
+  }
+</style>
+{% if user.is_authenticated %}
+<h1>Aereopuerto ----------------------</h1>
+<h5 style="text-align: center;">Bienvenido {{ user.username }}!</h5>
+
+{% endif %}
+<a href="/aereopuerto"> >Ver viajes disponibles</a> <br> <!-- ya no -->
+{% if request.user|has_group:"gestion_aereopuerto" %}
+<a href="/clientes"> >Link de Clientes</a> <br>
+<a href="/aviones"> >Link de Aviones</a> <br>
+{% endif%}
+<a href="/aereolinea"> >Ver aereolineas disponibles</a> <br>
+{% if request.user|has_group:"gestion_aereopuerto" %}
+<a href="/asiento"> >Link de asiento</a> <br>
+<a href="/boleto"> >Link de boleto</a> <br>
+{% endif%}
+{% if request.user|has_group:"cliente" %}
+<a href="{% url 'listar_boletos' %}" >>Ver mis boletos</a> <br>
+{% endif%}
+{% if request.user|has_group:"gestion_aereopuerto" %}
+<a href="/ciudad"> >Link de ciudad</a> <br>
+<a href="/pais"> >Link de pais</a> <br>
+<a href="/admin"> >admin</a> <br>
+{% endif%}
+
+<div class="container">
+
+  {% if request.user|has_group:"gestion_aereopuerto" %}
+  <div class="d-flex flex-wrap flex-row-reverse">
+    <div class="card card_hotel d-flex flex-column justify-content-between">
+      <div class="car-body">
+        <h5 class="card-title">Clientes</h5>
+        <h6 class="card-subtitle">Gestion clientes</h6>
+
+        <p class="card-text">Ver, editar y eliminar los clientes</p>
+      </div>
+
+      <div>
+
+        <a href="/clientes" class="buttonClass1" >Clientes</a>
+      </div>
+    </div>
+
+
+    <div class="card card_hotel d-flex flex-column justify-content-between">
+      <div class="car-body">
+        <h5 class="card-title">Aviones</h5>
+        <h6 class="card-subtitle">Gestion aviones</h6>
+
+        <p class="card-text">Ver, editar y eliminar aviones</p>
+      </div>
+
+      <div>
+        <a href="/aviones" class="buttonClass1">Aviones</a>
+      </div>
+    </div>
+
+
+    <div class="card card_hotel d-flex flex-column justify-content-between">
+      <div class="car-body">
+        <h5 class="card-title">Admin</h5>
+        <h6 class="card-subtitle">Ingresar al Admin</h6>
+
+        <p class="card-text">Configurar las opciones de Django</p>
+      </div>
+
+      <div>
+        <a href="/admin" class="buttonClass1">Admin</a>
+      </div>
+    </div>
+
+
+  </div>
+  {% endif %}
+
+</div>
+
+{% endblock %}

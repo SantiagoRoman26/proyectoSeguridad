@@ -1,0 +1,7 @@
+<h4>Modificar Cliente</h4>
+<form method="POST" > {% csrf_token %}
+    <div class="form-group row">
+        {{formulario_cliente.as_p}}
+    </div>
+    <button type="submit">Modificar Cliente</button>
+</form>

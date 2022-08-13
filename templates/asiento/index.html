@@ -1,0 +1,41 @@
+{% extends 'master.html' %}
+{% block contenido %}
+
+<div class="container">
+    <h4>Lista de asientos:</h4>
+    <table class="table table-sm" style="width: 100px;">
+        <tr style="border-style: solid;border-width: 1px;">
+            <th style="width: 10px;border-style: solid;border-width: 1px;">Viaje:</th>
+            <th style="border-style: solid;border-width: 1px;">{{viaje.numero}}</th>
+        </tr>
+        <tr>
+            <th style="width: 10px;border-style: solid;border-width: 1px;">Avion:</th>
+            <th style="border-style: solid;border-width: 1px;">{{avion.numero}}</th>
+        </tr>
+
+    </table>
+
+    <table class="table table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>Numero</th>
+                <th>Categoria</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for asiento in listaAsiento%}
+            <tr>
+                {% if asiento.estado == True %}
+                <td>{{asiento.numero}}</td>
+                <td>{{asiento.categoria}}</td>
+                <td><a class="btn btn-primary" href="{% url 'seleccionar_asiento' asiento.numero viaje.numero %}" role="button">Seleccionar</a></td>
+                <!--umm-->
+                {% endif %}
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endblock %}
+</div>

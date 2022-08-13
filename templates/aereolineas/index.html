@@ -1,0 +1,62 @@
+{% extends 'master.html' %}
+{% load auth_extras %}
+{% block contenido %}<!--aqui-->
+
+<html>
+
+<head>
+    <meta>
+    <title>Aereopuerto 2021</title>
+    <link href="https://bootswatch.com/4/lux/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <h4>Lista de Aereolineaes</h4>
+            <form class="d-flex" method="POST">{% csrf_token %}
+                <input  class="form-control" name="busqueda" placeholder="Ingrese su Busqueda"
+                    aria-label="busqueda">
+                <button style="margin-left: 10px; height: 50px;" class="btn btn-info" type="submit">Buscar</button>
+                {% if viaje.estado == True or request.user|has_group:"gestion_aereopuerto" %}
+                <a style="margin-left: 10px;background-color: rgb(54, 54, 207); height: 50px;" 
+                class="btn btn-primary" href="{% url 'crear_aereolinea'%}" role="button">Nueva Aereolinea</a>
+                {% endif %}
+            </form> 
+        </div>
+    </nav>
+
+    <div class="container">
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>Codigo</th>
+                    <th>Nombre</th>
+                    {% if viaje.estado == True or request.user|has_group:"gestion_aereopuerto" %}
+                    <th>Opciones</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for aereolinea in listaAereolinea%}
+                <tr>
+                    <td>{{aereolinea.aereolinea_id}}</td>
+                    <td>{{aereolinea.nombre}}</td>
+                    {% if viaje.estado == True or request.user|has_group:"gestion_aereopuerto" %}
+                    <td >
+                        <a class="btn btn-danger" href="{% url 'eliminar_aereolinea' aereolinea.aereolinea_id %}"
+                            role="button">Eliminar</a>
+                        <a class="btn btn-info"  href="{% url 'modificar_aereolinea' aereolinea.aereolinea_id %}"
+                            role="button">Editar</a>
+                    </td>
+                    {% endif %}
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
+{% endblock %}<!--aqui-->

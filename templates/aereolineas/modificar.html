@@ -1,0 +1,7 @@
+<h4>Modificar Aereolinea</h4>
+<form method="POST" > {% csrf_token %}
+    <div class="form-group row">
+        {{formulario_aereolinea.as_p}}
+    </div>
+    <button type="submit">Modificar Aereolinea</button>
+</form>

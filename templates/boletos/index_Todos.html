@@ -1,0 +1,52 @@
+{% extends 'master.html' %}
+{% block contenido %}<!--aqui-->
+
+<html>
+
+<head>
+    <meta>
+    <title>Aereopuerto 2021</title>
+    <link href="https://bootswatch.com/4/lux/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <h4>Lista de Asientos</h4>
+            <form class="d-flex" method="POST">{% csrf_token %}
+                <input  class="form-control" name="busqueda" placeholder="Ingrese su Busqueda"
+                    aria-label="busqueda">
+                <button style="margin-left: 10px; height: 50px;" class="btn btn-info" type="submit">Buscar</button>
+                
+            </form> 
+        </div>
+    </nav>
+
+    <div class="container">
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>Cliente</th>
+                    <th>Num. Viaje</th>
+                    <th>num_asiento</th>
+                    <th>categoria_asiento</th>
+                    <th>coste</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for boleto in listaBoletos%}
+                <tr>
+                    <td>{{boleto.cliente.nombres}}</td>
+                    <td>{{boleto.viaje}}</td>
+                    <td>{{boleto.num_asiento}}</td>
+                    <td>{{boleto.categoria_asiento}}</td>
+                    <td>{{boleto.coste}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
+{% endblock %}<!--aqui-->

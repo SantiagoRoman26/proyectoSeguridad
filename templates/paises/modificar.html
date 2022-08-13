@@ -1,0 +1,7 @@
+<h4>Modificar Pais</h4>
+<form method="POST" > {% csrf_token %}
+    <div class="form-group row">
+        {{formulario_pais.as_p}}
+    </div>
+    <button type="submit">Modificar Pais</button>
+</form>

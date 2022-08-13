@@ -1,0 +1,132 @@
+{% extends 'master.html' %}
+{% load auth_extras %}
+{% block contenido %}
+<!--aqui-->
+<style>
+    #checkmark {
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        background: #c9ff00;
+        border-radius: 50%;
+        -ms-transform: rotate(45deg);
+        /* IE 9 */
+        -webkit-transform: rotate(45deg);
+        /* Chrome, Safari, Opera */
+        transform: rotate(45deg);
+    }
+
+    .close-icon {
+        display: block;
+        box-sizing: border-box;
+        width: 20px;
+        height: 20px;
+        border-width: 3px;
+        border-style: solid;
+        border-color: red;
+        border-radius: 100%;
+        background: -webkit-linear-gradient(-45deg, transparent 0%, transparent 46%, white 46%, white 56%, transparent 56%, transparent 100%), -webkit-linear-gradient(45deg, transparent 0%, transparent 46%, white 46%, white 56%, transparent 56%, transparent 100%);
+        background-color: red;
+        box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.5);
+        transition: all 0.3s ease;
+    }
+</style>
+<html>
+
+<head>
+    <meta>
+    <title>Aereopuerto 2021</title>
+    <link href="https://bootswatch.com/4/lux/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <h4>Lista de Viajes</h4>
+            <form class="d-flex" method="POST">{% csrf_token %}
+                <input class="form-control" name="busqueda" placeholder="Ingrese su Busqueda" aria-label="busqueda">
+                <button style="margin-left: 10px; height: 50px;" class="btn btn-info" type="submit">Buscar</button>
+                {% if request.user|has_group:"gestion_aereopuerto" %}
+                <a style="margin-left: 10px;background-color: rgb(54, 54, 207); height: 50px;" class="btn btn-primary"
+                    href="{% url 'crear_viaje'%}" role="button">Nuevo Viaje</a>
+                {% endif %}
+
+            </form>
+        </div>
+    </nav>
+
+    <div class="container">
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Numero</th>
+                    <th scope="col">fechaViaje</th>
+                    <th scope="col">fechaLlegada</th>
+                    <th scope="col">Destino</th>
+                    {% if request.user|has_group:"gestion_aereopuerto" or request.user|has_group:"avion" %}
+                    <th scope="col">Avion</th>
+                    {% endif %}
+                    {% if request.user|has_group:"gestion_aereopuerto" %}
+                    <th scope="col">Acciones</th>
+                    <th scope="col">Clientes</th>
+                    {% endif %}
+                    {% if request.user|has_group:"cliente" %}
+                    <th scope="col">Acciones</th>
+                    {% endif %}
+                    {% if request.user|has_group:"gestion_aereopuerto" %}
+                    <th scope="col">estado</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for viaje in listaViajes%}
+                {% if viaje.estado == True or request.user|has_group:"gestion_aereopuerto" %}
+                <tr>
+                    <td>{{viaje.numero}}</td>
+                    <td>{{viaje.fechaViaje}}</td>
+                    <td>{{viaje.fechaLlegada}}</td>
+                    <td> {{viaje.destino}}</td>
+                    {% if request.user|has_group:"gestion_aereopuerto" or request.user|has_group:"avion" %}
+                    <td><a class="btn btn-primary" href="{% url 'avions' viaje.numero %}" role="button">Aviones</a></td>
+                    {% endif %}
+                    {% if request.user|has_group:"gestion_aereopuerto" %}
+                    <td><a class="btn btn-primary" href="{% url 'clientes' viaje.numero %}" role="button">Clientes</a>
+                    </td>
+                    <td>
+
+                        <a class="btn btn-danger" href="{% url 'eliminar_viaje' viaje.numero %}"
+                            role="button">Eliminar</a>
+                        <a class="btn btn-info" href="{% url 'modificar_viaje' viaje.numero %}" role="button">Editar</a>
+
+                    </td>
+
+                    {% endif %}
+
+                    {% if request.user|has_group:"cliente" %}
+                    {% if listaBoletos|in_category:viaje %}
+                    {% else %}
+                    <td><a class="btn btn-primary" href="{% url 'solicitar_viaje' viaje.numero %}"
+                            role="button">Solicitar viaje</a></td>
+                    {% endif %}
+                    {% endif %}
+                    {% if request.user|has_group:"gestion_aereopuerto" %}
+                    {% if viaje.estado == True %}
+                    <td><span id="checkmark"></span></td>
+                    {% else %}
+                    <td><span class="close-icon"></span></td>
+                    {% endif %}
+                    {% endif %}
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% for boleto in listaBoletos %}
+    <p>--{{boleto.viaje}}--</p>
+    {% endfor %}
+</body>
+
+</html>
+{% endblock %}
+<!--aqui-->

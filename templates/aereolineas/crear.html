@@ -1,0 +1,17 @@
+{% extends 'master.html' %}
+{% block contenido %}<!--aqui-->
+<html>
+
+<head>
+    <meta>
+    <title>Crear Aereolinea</title>
+    <link href="https://bootswatch.com/4/lux/bootstrap.min.css" rel="stylesheet">
+</head>
+<h4>Crear Aereolinea</h4>
+<form method="POST"> {% csrf_token %}
+    {{formulario_aereolinea.as_p}}
+    <button class="btn btn-primary" type="submit">Crear Aereolinea</button>
+</form>
+
+</html>
+{% endblock %}<!--aqui-->
